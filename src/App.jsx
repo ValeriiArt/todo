@@ -1,34 +1,23 @@
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import './App.css';
 import InputForm from './components/InputForm';
 import TodoList from './components/TodoList';
+import { addTodo } from './store/todoSlise';
 
 function App() {
-  const [todos, setTodos] = useState([]);
   const [text, setText] = useState('');
-
-  const addTodo = () => { 
-    if (text.trim().length) {
-      setTodos([
-        ...todos,
-        {
-          id: new Date().toISOString(),
-          text,
-        }
-      ])     
-    }
+  const dispatch = useDispatch();
+  
+  const addTask = () => {
+    dispatch(addTodo({ text }));
     setText('');
   };
 
-  const deleteTodo = (todoId) => {
-    setTodos(todos.filter(todo=>todo.id !== todoId))
-  }
-
-
   return (
     <div className="App">
-      <InputForm text={text} hendelSubmit={addTodo} hendelInput={ setText} />
-      <TodoList todos={todos}  deleteTodo={deleteTodo } />
+      <InputForm text={text} hendelSubmit={addTask} hendelInput={setText} />
+      <TodoList/>
     </div>
 
   );
